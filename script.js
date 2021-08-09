@@ -2,14 +2,24 @@
 var criteria = {
   length: "",
   case: "",
-  numSpec: ""
+  numSym: ""
 }
 
-var charset = {
-  alpha: "abcdefghijklmnopqrstuvwxyz",
-  numeric: "0123456789",
-  special: "!#$%&'()*+,-./:;<=>?@[]^_`{|}~"
-}
+var password = ""
+
+// Charsets
+var alpha = "abcdefghijklmnopqrstuvwxyz"; // 26 characters
+var numeric = "0123456789"; // 10 characters
+var symbols = "!#$%&'()*+,-./:;<=>?@[]^_`{|}~" // 30 characters
+var alphaNumeric = alpha + numeric; // 36 characters
+var alphaSymbols = alpha + symbols; // 56 characters
+var alphaNumSym = alpha + numeric + symbols; // 66 characters
+var capsNumeric = alpha.toUpperCase() + numeric; // 36 characters
+var capsSymbols = alpha.toUpperCase() + symbols; // 56 characters
+var capsNumSym = alpha.toUpperCase() + numeric + symbols; // 66 characters
+var capsAlphaNumeric = alpha.toUpperCase() + alpha + numeric; // 62 characters
+var capsAlphaSymbols = alpha.toUpperCase() + alpha + symbols; // 82 characters
+var capsAlphaNumSym = alpha.toUpperCase() + alpha + numeric + symbols; // 92 characters
 
 var getCriteria = function() {
   lengthPrompt();
@@ -83,21 +93,21 @@ var letterPrompt = function() {
 }
 
 var nsPrompt = function() {
-  criteria.numSpec = window.prompt("Which additional character types would you like to include? Select... \n\n'1' for NUMBERS, \n'2' for SPECIAL CHARACTERS, or \n'3' for BOTH numbers and special characters, or \n'4' for NEITHER; only letters");
-  criteria.numSpec = parseInt(criteria.numSpec);
+  criteria.numSym = window.prompt("Which additional character types would you like to include? Select... \n\n'1' for NUMBERS, \n'2' for SPECIAL CHARACTERS, or \n'3' for BOTH numbers and special characters, or \n'4' for NEITHER; only letters");
+  criteria.numSym = parseInt(criteria.numSym);
 
-  while (criteria.case === 4 && criteria.numSpec === 4) {
+  while (criteria.case === 4 && criteria.numSym === 4) {
     window.alert("Your password must contain at least one type of character.");
     criteria.case = "";
-    criteria.numSpec = '';
+    criteria.numSym = '';
     letterPrompt();
   }
 
-  switch (criteria.numSpec) {
+  switch (criteria.numSym) {
     case 1:
         var numeric = window.confirm("Your password will contain numbers, but no special characters. \nClick 'Cancel' to select a different option.");
         if (!numeric) {
-          criteria.numSpec = "";
+          criteria.numSym = "";
           nsPrompt();
         } else {
         break;
@@ -105,23 +115,23 @@ var nsPrompt = function() {
     case 2:
       var specialCharacters = window.confirm("Your password will contain special characters, but no numbers. \nClick 'Cancel' to select a different option.");
       if (!specialCharacters) {
-        criteria.numSpec = "";
+        criteria.numSym = "";
         nsPrompt();
       } else {
       break;
       }
     case 3:
-      var bothNumSpec = window.confirm("Your password will contain both numbers and special characters. \nClick 'Cancel' to select a different option.");
-      if (!bothNumSpec) {
-        criteria.numSpec = "";
+      var bothNumSym = window.confirm("Your password will contain both numbers and special characters. \nClick 'Cancel' to select a different option.");
+      if (!bothNumSym) {
+        criteria.numSym = "";
         nsPrompt();
       } else {
       break;
       }
     case 4:
-      var noNumSpec = window.confirm("Your password will not contain any numbers or special characters. \nClick 'Cancel' to select a different option.");
-      if (!noNumSpec) {
-        criteria.numSpec = "";
+      var noNumSym = window.confirm("Your password will not contain any numbers or special characters. \nClick 'Cancel' to select a different option.");
+      if (!noNumSym) {
+        criteria.numSym = "";
         nsPrompt();
       } else {
       break;
@@ -130,6 +140,16 @@ var nsPrompt = function() {
       window.alert("Please provide a valid response.");
       nsPrompt();
       break;
+  }
+  generatePassword();
+}
+
+var generatePassword = function() {
+  for (var i = 0; i < criteria.length; i++) {
+    //Lowercase & numbers only
+    if (criteria.case === 1 && criteria.numSym === 1) {
+      return alphaNumeric.charAt(Math.random() * 37);
+    }
   }
 }
 
