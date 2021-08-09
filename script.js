@@ -5,7 +5,7 @@ var criteria = {
   numSym: ""
 }
 
-// User begins by specifying password length
+// Prompt #1) User begins by specifying password length
 function lengthPrompt() {
   criteria.length = prompt("Please enter the number of characters you wish to include. \n(A minimum of 8 characters is required.)");
   criteria.length = parseInt(criteria.length);
@@ -28,12 +28,14 @@ function lengthPrompt() {
   letterPrompt();
 }
 
+// Prompt #2) User then selects letter casing
 var letterPrompt = function() {
   criteria.case = prompt("Please select from the following: \n\n'1' for only LOWERCASE, \n'2' for only UPPERCASE, \n'3' for BOTH upper & lowercase, or \n'4' for NO LETTERS at all.");
   criteria.case = parseInt(criteria.case);
   switch (criteria.case) {
     case 1:
         var lowercaseOnly = window.confirm("Your password will only contain lowercase letters. \nClick 'Cancel' to select a different option.");
+        // Clicking cancel clears the response and brings back the previous prompt
         if (!lowercaseOnly) {
           criteria.case = "";
           letterPrompt();
@@ -73,14 +75,18 @@ var letterPrompt = function() {
   nsPrompt();
 }
 
+// Prompt #3) User finishes by choosing whether or not to include numbers & special characters (aka symbols)
 var nsPrompt = function() {
   criteria.numSym = prompt("Which additional character types would you like to include? Select... \n\n'1' for NUMBERS, \n'2' for SPECIAL CHARACTERS, or \n'3' for BOTH numbers and special characters, or \n'4' for NEITHER; only letters");
   criteria.numSym = parseInt(criteria.numSym);
 
+  // alert user if 4 has been selected both times
   if (criteria.case === 4 && criteria.numSym === 4) {
     window.alert("Your password must contain at least one type of character.");
+    // clear previous 2 responses
     criteria.case = "";
     criteria.numSym = '';
+    // go back to letterPrompt
     letterPrompt();
   } else {
     switch (criteria.numSym) {
